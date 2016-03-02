@@ -1,13 +1,14 @@
+require('./lib/bot.prepare.js');
+
 var requester = require('./lib/zlib.requester.js');
 var botHelper = require('./lib/bot.helper.js');
+var config = require('./config.json') || {};
 var botConfig = botHelper( process.env.token );
-
 
 var opt = {
   url: 'http://api.stackexchange.com/2.2/search/advanced?order=desc&sort=activity&answers=1&site=stackoverflow',
   encoding: null
-}
-
+};
 
 botConfig.controller.hears(['hey (.*)'], ['direct_message', 'direct_mention', 'mention'], function(bot, message){
   console.log(message);

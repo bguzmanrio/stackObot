@@ -5,7 +5,7 @@
   "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "token=xoxb-23526422868-sLSyxk0rEAkmjT987lw55xaI node bot.js"
+    "start": "node bot.js"
   },
   "author": "bguzman",
   "license": "ISC",
