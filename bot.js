@@ -64,10 +64,8 @@ botConfig.controller.hears(['hey (.*)'], ['direct_message', 'direct_mention', 'm
 var makeRequest = function( bot, message, options ){
   var items;
   requester.request( options, function( err, answers ){
- console.log('this is err', arguments);
     if( !err ){      
       items = JSON.parse(answers).items;
-      console.log('this is items', items);
       bot.say( 'Got ' + items.length + ' questions like yours, motafucka');
     }else{
       bot.say( 'Not results, motafucka');
