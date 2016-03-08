@@ -2,12 +2,13 @@ require('./lib/bot.prepare.js');
 
 var botHelper = require('./lib/bot.helper.js');
 var botRequester = require('./lib/bot.requester.js');
-var botConfig = botHelper( process.env.token );
 var botConversation = require('./lib/bot.conversation.js');
+var botListeners = require('./lib/bot.config.js');
+var botConfig = botHelper( process.env.token );
 
 botConfig.controller.hears(
-  ['hey (.*)'], 
-  ['direct_message', 'direct_mention', 'mention'], 
+  botConfig.expressions, 
+  botConfig.hears, 
   function( bot, message ){  
     
     var makeFinalRequest = function( bot, currentParams ){
