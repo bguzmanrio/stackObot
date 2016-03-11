@@ -3,26 +3,38 @@ require('./lib/bot.prepare.js');
 var botHelper = require('./lib/bot.helper.js');
 var botRequester = require('./lib/bot.requester.js');
 var botConversation = require('./lib/bot.conversation.js');
-var botListeners = require('./lib/bot.config.js');
+var botListeners = require('./lib/bot.listeners.js');
+var botFormatter = require('./lib/bot.formatter.js');
 var botConfig = botHelper( process.env.token );
 
+
 botConfig.controller.hears(
-  botConfig.expressions, 
-  botConfig.hears, 
-  function( bot, message ){  
+  botListeners.ambientExpression,
+  botListeners.ambientListener,
+  function( bot, message ){
+    console.log(message);
+    bot.reply(message, 'Who is the motafucka?');
+  }
+)
+
+botConfig.controller.hears(
+  botListeners.startExpression, 
+  botListeners.hears, 
+  function( mainBot, mainMessage ){  
     
     var makeFinalRequest = function( bot, currentParams ){
       botRequester.makeRequest( currentParams, function( err, res ){
+        //bot.next();
         if( !err ){      
-          bot.say( 'Got ' + res.length + ' questions like yours, motafucka');
+          var message = botFormatter.getLinks( res );
+          mainBot.reply( mainMessage, 'Results motafuca: ' + message );
         }else{
-          bot.say( 'Not results, motafucka');
+          mainBot.reply( mainMessage, 'Not results, motafucka'); 
         }
-        bot.next();
       });
     };
     
-    bot.startConversation(message, function(err, convBot){
+    mainBot.startConversation(mainMessage, function(err, convBot){
       var asker = new botConversation.ParameterAsker( convBot, makeFinalRequest );
       asker.askParameter();
       convBot.next();
